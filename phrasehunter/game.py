@@ -41,19 +41,24 @@ class Game:
            Welcome to Phrase Hunter
         ******************************''')
 
-    def check_guess(self, guess: chr) -> bool:
-        if guess in self.active_phrase:
-            print("YAY")
-            return True
+    @staticmethod
+    def game_over(missed: int) -> None:
+        if missed < 5:
+            print('\nCongratulations!  You win!')
         else:
-            print("Bummer!")
-            return False
+            print('\nBummer!  Try  again!')
 
     def start(self):
         self.welcome()
-        print(f"\n\nNumber missed: {sum(1 for guess in self.guesses if guess not in self.active_phrase.phrase)}\n")
-        self.active_phrase.display(self.guesses)
-        user_guess = self.get_guess()
-        print(user_guess)
-        self.guesses.append(user_guess)
-        self.active_phrase.display(self.guesses)
+        while self.missed < 5 and not self.active_phrase.check_complete(self.guesses):
+            print(f"\n\nNumber missed: {sum(1 for guess in self.guesses if guess not in self.active_phrase.phrase)}\n")
+            self.active_phrase.display(self.guesses)
+            user_guess = self.get_guess()
+            print(user_guess)
+            # self.check_guess(user_guess)
+            self.guesses.append(user_guess)
+            if not self.active_phrase.check_guess(user_guess):
+                self.missed += 1
+            self.active_phrase.display(self.guesses)
+
+        self.game_over(self.missed)
