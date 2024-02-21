@@ -29,8 +29,8 @@ class Game:
     @staticmethod
     def get_guess() -> chr:
         guess: str = input("\nEnter a letter: ")
-        while not guess or not guess[0].isalpha():
-            guess: str = input("Must enter a letter: ")
+        while not guess or not guess[0].isalpha() or len(guess) != 1:
+            guess: str = input("Must enter a single letter: ")
 
         return guess[0]
 
